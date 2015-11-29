@@ -59,3 +59,25 @@ imagePicker.open({
     chooseFromLibrary: true // get default values
 })
 ```
+
+## `imageUri` usage
+
+`imageUri` from Promise can be directly passed to `<Image/>` or `<FormData/>`
+
+```js
+...
+render() {
+    <Image source={uri: imageUri, isStatic: true}/>
+} 
+...
+```
+
+```js
+var fd = new FormData();
+
+fd.append('photo', {
+    uri: imageUri,
+    type: 'image/jpeg',
+    name: 'photo.jpg'
+});
+```
