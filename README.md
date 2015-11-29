@@ -62,7 +62,7 @@ imagePicker.open({
 
 ## `imageUri` usage
 
-`imageUri` from Promise can be directly passed to `<Image/>` or `<FormData/>`
+`imageUri` from Promise can be directly passed to `<Image/>` or `FormData`
 
 ```js
 ...
