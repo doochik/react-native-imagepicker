@@ -9,9 +9,9 @@ A React Native module which wraps [ActionSheetIOS](http://facebook.github.io/rea
 
 1. `npm install react-native-imagepicker` 
 2. You need to include the RCTCameraRoll.xcodeproj in your project Libraries, and then make sure libRCTCameraRoll.a is included under "Link Binary With Libraries" in the Build Phases tab. See more docs on [Linking Libraries page](http://facebook.github.io/react-native/docs/linking-libraries-ios.html#content).
-3. Current version of react-native has 2 bugs ([#4411](https://github.com/facebook/react-native/pull/4412), [#4412](https://github.com/facebook/react-native/pull/4412)).
+3. **IMPORTANT**: current stable version of react-native has 2 bugs ([#4411](https://github.com/facebook/react-native/pull/4412), [#4412](https://github.com/facebook/react-native/pull/4412)).
    So you need to replace file `/Libraries/CameraRoll/RCTImagePickerManager.m` with [this one](https://github.com/facebook/react-native/blob/d08727d99fa07caabcb1fb37cf91de9a47e13b82/Libraries/CameraRoll/RCTImagePickerManager.m)
-   until new version will be released. 
+   until new version will be released (probably v0.17). 
 
 ## Usage
 
