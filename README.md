@@ -72,7 +72,7 @@ imagePicker.open({
 ```js
 ...
 render() {
-    <Image source={uri: imageUri, isStatic: true}/>
+    <Image source={{uri: imageUri, isStatic: true}}/>
 } 
 ...
 ```
