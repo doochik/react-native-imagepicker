@@ -69,14 +69,16 @@ var ImagePicker = {
                         break;
 
                     case 'useLastPhoto':
-                        CameraRoll.getPhotos(buttonCfg.config, function (response) {
-                            var lastPhoto = response.edges[0];
-                            if (lastPhoto) {
-                                resolve(lastPhoto.node.image.uri);
-                            } else {
-                                reject('NO_PHOTOS');
-                            }
-                        }, reject);
+                        CameraRoll.getPhotos(buttonCfg.config)
+                            .then(function (response) {
+                                var lastPhoto = response.edges[0];
+                                if (lastPhoto) {
+                                    resolve(lastPhoto.node.image.uri);
+                                } else {
+                                    reject('NO_PHOTOS');
+                                }
+                            }, 
+                            reject);
                         break;
 
                     case 'chooseFromLibrary':
