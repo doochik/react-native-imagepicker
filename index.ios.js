@@ -16,6 +16,7 @@ const ImagePicker = {
      *
      * @param {object|boolean|string} [config.takePhoto] "Take photo" button config. False to disable this button.
      * @param {string} [config.takePhoto.title="Take photo"] Button title.
+     * @param {string} [config.takePhoto.saveToCameraRoll=true] Save photo to Camera roll.
      * @param {string} [config.takePhoto.config={}] Config objects passed to ImagePickerIOS.openCameraDialog().
      *
      * @param {object|boolean|string} [config.useLastPhoto] "Use last photo" button config. False to disable this button.
@@ -42,6 +43,7 @@ const ImagePicker = {
 
             addButton('takePhoto', {
                 title: 'Take Photo',
+                saveToCameraRoll: true,
                 config: {}
             });
 
@@ -64,7 +66,7 @@ const ImagePicker = {
 
                 switch (actionId) {
                     case 'takePhoto':
-                        ImagePickerIOS.openCameraDialog(buttonCfg.config, resolve, reject);
+                        ImagePicker.openCameraDialog(buttonCfg).then(resolve, reject);
                         break;
 
                     case 'useLastPhoto':
@@ -72,16 +74,21 @@ const ImagePicker = {
                             .then(function (response) {
                                 const lastPhoto = response.edges[0];
                                 if (lastPhoto) {
-                                    resolve(lastPhoto.node.image.uri);
+                                    const image = lastPhoto.node.image;
+                                    resolve({
+                                        uri: image.uri,
+                                        height: image.height,
+                                        width: image.width,
+                                    });
                                 } else {
                                     reject('NO_PHOTOS');
                                 }
-                            }, 
+                            },
                             reject);
                         break;
 
                     case 'chooseFromLibrary':
-                        ImagePickerIOS.openSelectDialog(buttonCfg.config, resolve, reject);
+                        ImagePicker.openSelectDialog(buttonCfg).then(resolve, reject);
                         break;
 
                     default:
@@ -114,7 +121,46 @@ const ImagePicker = {
             }
 
         });
-    }
+    },
+
+    /**
+     * Open camera dialog with ImagePickerIOS.openCameraDialog().
+     * @param {object} [cameraDialogConfig={}] Config.
+     * @param {string} [cameraDialogConfig.saveToCameraRoll=false] Save photo to Camera roll.
+     * @param {string} [cameraDialogConfig.config={}] Config objects passed to ImagePickerIOS.openCameraDialog().
+     * @returns {Promise}
+     */
+    openCameraDialog(cameraDialogConfig = {}) {
+        return new Promise((resolve, reject) => {
+            ImagePickerIOS.canUseCamera((response) => {
+                if (response) {
+                    ImagePickerIOS.openCameraDialog(cameraDialogConfig.config || {}, (uri, height, width) => {
+                        if (cameraDialogConfig.saveToCameraRoll) {
+                            CameraRoll.saveToCameraRoll(uri);
+                        }
+
+                        resolve({ uri, height, width });
+                    }, reject);
+                } else {
+                    reject('CAMERA_UNAVAILABLE');
+                }
+            });
+        });
+    },
+
+    /**
+     * Open select dialog with ImagePickerIOS.openSelectDialog().
+     * @param {object} [selectDialogConfig={}] Config.
+     * @param {string} [selectDialogConfig.config={}] Config objects passed to ImagePickerIOS.openSelectDialog().
+     * @returns {Promise}
+     */
+    openSelectDialog(selectDialogConfig) {
+        return new Promise((resolve, reject) => {
+            ImagePickerIOS.openSelectDialog(selectDialogConfig.config || {}, (uri, height, width) => {
+                resolve({ uri, height, width });
+            }, reject);
+        });
+    },
 
 };
 

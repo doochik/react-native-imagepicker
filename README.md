@@ -1,33 +1,30 @@
 # react-native-imagepicker
 
-A React Native module which wraps [ActionSheetIOS](http://facebook.github.io/react-native/docs/actionsheetios.html#content),
- [CameraRoll](http://facebook.github.io/react-native/docs/cameraroll.html#content) and
- undocummented [ImagePickerIOS](https://github.com/facebook/react-native/blob/master/Libraries/CameraRoll/ImagePickerIOS.js)
+A React Native module which wraps [ActionSheetIOS](https://facebook.github.io/react-native/docs/actionsheetios.html),
+ [CameraRoll](https://facebook.github.io/react-native/docs/cameraroll.html) and
+ [ImagePickerIOS](https://facebook.github.io/react-native/docs/imagepickerios.html)
  to select a photo from the PhotoLibrary or CameraRoll. No external plugins needed.
  
 ## Setup
 
-1. `npm install react-native-imagepicker` 
-2. You need to include the `RCTCameraRoll.xcodeproj` (`react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj`) in your project Libraries, and then make sure libRCTCameraRoll.a is included under "Link Binary With Libraries" in the Build Phases tab. Get more info on official site: [Linking Libraries](http://facebook.github.io/react-native/docs/linking-libraries-ios.html#content). Steps are very similar.
-3. **IMPORTANT**: some versions before v0.17 have 2 bugs ([#4411](https://github.com/facebook/react-native/pull/4412), [#4412](https://github.com/facebook/react-native/pull/4412)).
-   So you need to replace file `react-native/Libraries/CameraRoll/RCTImagePickerManager.m` with [this one](https://github.com/facebook/react-native/blob/d08727d99fa07caabcb1fb37cf91de9a47e13b82/Libraries/CameraRoll/RCTImagePickerManager.m)
-   or update to v0.17. 
+1. `npm install --save react-native-imagepicker` 
+2. [Setup CameraRoll](http://facebook.github.io/react-native/releases/docs/cameraroll.html)
 
 ## Usage
 
 Basics
 
 ```js
-var imagePicker = require('react-native-imagepicker');
-
+const imagePicker = require('react-native-imagepicker');
 imagePicker.open({
     takePhoto: true,
     useLastPhoto: true,
     chooseFromLibrary: true
-}).then(function(imageUri) {
-    console.log('imageUri', imageUri);
-}, function() {
-    console.log('user cancel');
+}).then(({ uri, width, height }) => {
+    console.log('image asset', uri, width, height);
+}, (error) => {
+    // Typically, user cancel  
+    console.log('error', error);
 });
 
 ```
@@ -56,7 +53,7 @@ imagePicker.open({
 Also you can disable some of buttons
 
 ```js
-var imagePicker = require('react-native-imagepicker');
+const imagePicker = require('react-native-imagepicker');
 
 imagePicker.open({
     takePhoto: 'Custom title',  // Shorthand for custom title
@@ -65,24 +62,28 @@ imagePicker.open({
 })
 ```
 
-## `imageUri` usage
+## `uri` usage
 
-`imageUri` from Promise can be directly passed to `<Image/>` or `FormData`
+`uri` can be directly passed to `<Image/>` or `FormData`
 
 ```js
 ...
 render() {
-    <Image source={{uri: imageUri, isStatic: true}}/>
+    <Image source={{ uri: uri, isStatic: true }}/>
 } 
 ...
 ```
 
 ```js
-var fd = new FormData();
-
+const fd = new FormData();
 fd.append('photo', {
-    uri: imageUri,
+    uri: uri,
     type: 'image/jpeg',
     name: 'photo.jpg'
 });
 ```
+
+## Known bugs
+
+1. ImagePickerIOS take photo with wrong orientation [#12249](https://github.com/facebook/react-native/pull/12249).
+ You can replace `RCTImagePickerManager.m` with version from PR.
