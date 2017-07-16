@@ -6,7 +6,7 @@ import {
     ImagePickerIOS
 } from 'react-native';
 
-var ImagePicker = {
+const ImagePicker = {
 
     /**
      * Opens ActionSheetIOS to select further action (take photo, choose last photo, choose from library).
@@ -28,10 +28,10 @@ var ImagePicker = {
      *
      * @returns {Promise}
      */
-    open: function (config) {
+    open(config) {
         return new Promise(function (resolve, reject) {
-            var asOptions = [];
-            var buttons = [];
+            const asOptions = [];
+            const buttons = [];
 
             // extend config with defaults
             config = config || {};
@@ -59,8 +59,8 @@ var ImagePicker = {
                 options: asOptions,
                 cancelButtonIndex: 0
             }, (index) => {
-                var actionId = buttons[index];
-                var buttonCfg = config[actionId];
+                const actionId = buttons[index];
+                const buttonCfg = config[actionId];
 
                 switch (actionId) {
                     case 'takePhoto':
@@ -70,7 +70,7 @@ var ImagePicker = {
                     case 'useLastPhoto':
                         CameraRoll.getPhotos(buttonCfg.config)
                             .then(function (response) {
-                                var lastPhoto = response.edges[0];
+                                const lastPhoto = response.edges[0];
                                 if (lastPhoto) {
                                     resolve(lastPhoto.node.image.uri);
                                 } else {
@@ -91,11 +91,11 @@ var ImagePicker = {
             });
 
             function addButton(id, defaults) {
-                var button = config[id];
+                let button = config[id];
                 if (button) {
 
                     // cast to object
-                    var type = typeof button;
+                    const type = typeof button;
                     if (type === 'string') {
                         button = {
                             title: button
