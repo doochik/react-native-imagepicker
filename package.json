@@ -29,6 +29,6 @@
   "homepage": "https://github.com/doochik/react-native-imagepicker#readme",
 
   "peerDependencies": {
-    "react-native": ">=0.14.0"
+    "react-native": ">=0.40.0"
   }
 }
