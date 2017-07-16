@@ -1,6 +1,6 @@
 {
   "name": "react-native-imagepicker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A React Native module which wraps ActionSheetIOS, CameraRoll and ImagePickerIOS to select a photo from the library or camera",
   "main": "index.ios.js",
   "scripts": {
@@ -27,7 +27,6 @@
     "url": "https://github.com/doochik/react-native-imagepicker/issues"
   },
   "homepage": "https://github.com/doochik/react-native-imagepicker#readme",
-
   "peerDependencies": {
     "react-native": ">=0.40.0"
   }
