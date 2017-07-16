@@ -1,11 +1,10 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import {
     ActionSheetIOS,
     CameraRoll,
     ImagePickerIOS
-} = React;
+} from 'react-native';
 
 var ImagePicker = {
 
@@ -119,4 +118,4 @@ var ImagePicker = {
 
 };
 
-module.exports = ImagePicker;
+export default ImagePicker;
