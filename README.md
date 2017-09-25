@@ -86,4 +86,4 @@ fd.append('photo', {
 ## Known bugs
 
 1. ImagePickerIOS take photo with wrong orientation [#12249](https://github.com/facebook/react-native/pull/12249).
- You can replace `RCTImagePickerManager.m` with version from PR.
+ Fixed in RN >= 0.48.
